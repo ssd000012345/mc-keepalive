@@ -4,11 +4,11 @@ function createBot() {
     console.log('正在试图以【稳定伪装模式】登录服务器...');
     
     const bot = mineflayer.createBot({
-        host: 'mcserver.tds.gv.uy',   // 用Cloudflare域名
-        port: 11514,                    // 你确认可用的端口
+        host: '163.5.201.12',
+        port: 14106,
         username: 'Terrance',  
         version: '1.21.1',
-        // 关键：禁用物理引擎，防止自动发送移动包
+        // 禁用物理引擎，防止自动发送移动包触发反作弊
         physicsEnabled: false
     });
 
@@ -36,7 +36,7 @@ function createBot() {
             }, 50000 + Math.random() * 20000); // 50-70秒随机一次
 
             activityIntervals.push(chatInterval);
-        }, 10000); // 等待10秒
+        }, 10000); // 等待10秒再开始行动
     });
 
     bot.on('end', (reason) => {
@@ -53,7 +53,6 @@ function createBot() {
         console.error('网络层发生错误:', err.message);
     });
 
-    // 监控被踢原因
     bot.on('kicked', (reason) => {
         console.log('被踢出，原因:', reason);
     });
