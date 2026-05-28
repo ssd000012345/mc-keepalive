@@ -1,6 +1,6 @@
 
 # 24H MC Bot KeepAlive
-# cron触发关闭了，如需自动触发
+# cron触发关闭了，如需自动触发把main.yml文件里的#schedule:和#- cron前面的#去除
 一个使用 **Mineflayer** 实现的 Minecraft 机器人挂机项目，专为 **24 小时静默保活** 而设计。
 
 ## 项目简介
