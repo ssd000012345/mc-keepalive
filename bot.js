@@ -4,7 +4,7 @@ function createBot() {
     console.log('正在试图以【人类伪装模式】登录服务器...');
     
     const bot = mineflayer.createBot({
-        host: 'mcserver.tds.gv.uy', 
+        host: '163.5.201.12', 
         port: 14106,                  
         username: 'Terrance',  // 💡 建议用一个看起来像真实玩家的英文名字
         version: '1.21.1'           
