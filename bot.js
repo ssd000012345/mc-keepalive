@@ -4,10 +4,12 @@ function createBot() {
     console.log('正在试图以【稳定伪装模式】登录服务器...');
     
     const bot = mineflayer.createBot({
-        host: '163.5.201.12', 
-        port: 14106,                  
+        host: 'mcserver.tds.gv.uy',   // 用Cloudflare域名
+        port: 11514,                    // 你确认可用的端口
         username: 'Terrance',  
-        version: '1.21.1'           
+        version: '1.21.1',
+        // 关键：禁用物理引擎，防止自动发送移动包
+        physicsEnabled: false
     });
 
     let activityIntervals = [];
@@ -15,11 +17,11 @@ function createBot() {
     bot.on('spawn', () => {
         console.log('【成功】Terrance 已成功降临服务器！');
 
-        // 延迟 5 秒后再启动人类行为模拟，给游戏世界留出充足的加载时间
+        // 等待 10 秒，让服务器完全完成玩家初始化
         setTimeout(() => {
-            console.log('世界加载完毕，开始执行安全的视线和聊天伪装...');
+            console.log('世界加载完毕，开始保活...');
 
-            // 1. 模拟人类随机说话（45-60秒无规律波动，避免被判定为固定机器人）
+            // 只发聊天，不做任何移动/视角操作
             const chatInterval = setInterval(() => {
                 const msgs = [
                     "这服延迟还行",
@@ -30,32 +32,30 @@ function createBot() {
                 ];
                 const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
                 bot.chat(randomMsg);
-            }, 45000 + Math.random() * 15000);
+                console.log(`[心跳] 发送聊天: ${randomMsg}`);
+            }, 50000 + Math.random() * 20000); // 50-70秒随机一次
 
-            // 2. 模拟人类随机“转动视线/看四周”（每 12-17 秒无规律扭头，完美破解原地发呆检测）
-            const lookInterval = setInterval(() => {
-                const yaw = (Math.random() * 360 - 180) * (Math.PI / 180);
-                const pitch = (Math.random() * 60 - 30) * (Math.PI / 180);
-                bot.look(yaw, pitch);
-            }, 12000 + Math.random() * 5000);
-
-            activityIntervals.push(chatInterval, lookInterval);
-        }, 5000); // 稳稳地等待 5 秒
+            activityIntervals.push(chatInterval);
+        }, 10000); // 等待10秒
     });
 
-    // 核心安全重连逻辑
     bot.on('end', (reason) => {
         console.log(`断开连接 (原因: ${reason})，正在清理定时器并准备重连...`);
         activityIntervals.forEach(clearInterval);
         activityIntervals = [];
         
-        // 15 秒左右随机重连，防止被服务器防火墙拦截
-        const reconnectTime = 12000 + Math.random() * 5000;
+        const reconnectTime = 15000 + Math.random() * 5000;
+        console.log(`将在 ${Math.round(reconnectTime/1000)} 秒后重连...`);
         setTimeout(createBot, reconnectTime);
     });
 
     bot.on('error', (err) => {
-        console.error('网络层发生错误:', err);
+        console.error('网络层发生错误:', err.message);
+    });
+
+    // 监控被踢原因
+    bot.on('kicked', (reason) => {
+        console.log('被踢出，原因:', reason);
     });
 }
 
