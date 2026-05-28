@@ -1,8 +1,6 @@
 name: 24H MC Bot KeepAlive
 
 on:
-  push:
-    branches: [ "main" ]
   schedule:
     # 每 3 小时自动启动一次，用来应付 GitHub 单次任务不能超过 6 小时的限制
     - cron: '0 */3 * * *'
