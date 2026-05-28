@@ -45,10 +45,10 @@
 
 ```js
 const bot = mineflayer.createBot({
-    host: '163.5.201.12',     // 修改为你的服务器 IP
-    port: 14106,              // 修改为你的服务器端口
-    username: 'Terrance',     // 机器人用户名
-    version: '1.21.1',
+    host: '1.1.1.1',     // 修改为你的服务器 IP
+    port: 1234,              // 修改为你的服务器端口
+    username: 'Terrance',     // 机器人用户名，自己编一个
+    version: '1.21.1',        //游戏版本号一定要选自己对应的
     // ...
 });
 ```
