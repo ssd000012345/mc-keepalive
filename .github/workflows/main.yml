@@ -1,0 +1,30 @@
+name: 24H MC Bot KeepAlive
+
+on:
+  push:
+    branches: [ "main" ]
+  schedule:
+    # 每 3 小时自动启动一次，用来应付 GitHub 单次任务不能超过 6 小时的限制
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # 允许你手动点击按钮启动
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 检查仓库代码
+      uses: actions/checkout@v4
+
+    - name: 设置 Node.js 环境
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: 安装依赖
+      run: npm install
+
+    - name: 启动机器人挂机
+      # 每次挂机 2 小时 50 分钟后自动退出，然后由上方的 cron 触发器无缝接力启动
+      timeout-minutes: 170 
+      run: node bot.js
